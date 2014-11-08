@@ -1,0 +1,22 @@
+Checkpoint #1
+
+802.11~ Design
+Graham Baker and Zeke Rosenberg 
+
+
+
+3. We are going to have three threads in our implementation. One will be to start everything and runs the recv() code. Another thread will be a listener. This will be in charge of whats happening on the wire. How long has it been since a message has been sent, were there collisions, and then manage the contention window. This thread will tell individual senders when it is okay to send. It will also receive the incoming ack messages, and then tell the sender that the message was received. The sender will only be responsible for sending messages. When sending, they will open a thread, tell the listener that they want to send a message and wait for the listener to tell them to do it. Then, if the message is received with an ack, the listener will tell the sender the message was received and the thread will close. If there is no response in a given amount of time, the sender will repeat the process until the message is received. 
+
+
+4. 
+
+send()
+
+The sender will start a thread when it wants to start sending, but first it will talk to the listener to make sure the channel is open. When it is, the listener will tell the sender that it is alright, and send will be called. 
+
+recv()
+
+This method is not called in a thread. It will be called by the application above it. Since it is blocking, we can let it hang until it gets something coming in. 
+
+
+
