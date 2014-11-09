@@ -8,7 +8,7 @@ public class Broadcaster {
 		System.out.println("WELCOME");
 		
 		Frame f = new Frame();
-		
+		fffff
 	}
 
 }
