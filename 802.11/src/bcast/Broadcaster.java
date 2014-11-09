@@ -2,13 +2,17 @@ package bcast;
 import rf.RF;
 public class Broadcaster {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+private ArrayBlockingQueue sendQueue;
+
+	public Broadcaster()
+	{
 		
-		System.out.println("WELCOME");
+	}
+
+	public int send(short dest, byte[] data, int len)
+	{
+
 		
-		Frame f = new Frame();
-		fffff
 	}
 
 }
