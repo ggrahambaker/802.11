@@ -7,7 +7,7 @@ public class Broadcaster {
 		
 		System.out.println("WELCOME");
 		
-		Frame f = new Frame();
+		Frame f = new Frame(1,1);
 		
 	}
 
