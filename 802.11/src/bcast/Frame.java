@@ -16,13 +16,10 @@ public class Frame {
 	// constructor for CHECKPOINT 2
 
 	public Frame(int destAddr, int scrAddr){
+		
 		contInit();
-		
 		checkSumInit();
-		
 	}
-
-
 	
 	// create the control portion with type Data, 
 	// a sequence number of zero, and with the retry bit set to zero (off).
@@ -52,17 +49,5 @@ public class Frame {
 		frame = "";
 		
 		return frame;
-	}
-
-	public int getDestAddr()
-	{
-		return destAddr;
-	}
-
-	public int size()
-	{
-		int theSize;//the total number of bytes in the packet. This will be needed in the sender for error checking.
-
-		return theSize;
 	}
 }
