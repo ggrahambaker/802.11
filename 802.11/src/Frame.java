@@ -4,34 +4,60 @@ import java.util.*;
 public class Frame {
 	// CONSTANTS 
 
-	// whole message
-	
+	private static final int MIN_SIZE = 10;
+
+	// pieces
+	private int length;
 	private byte[] control;
-	private int destAddr;
-	private int srcAddr;
+	private byte[] destAddr;
+	private byte[] srcAddr;
 	private byte[] data;
-	private byte[] CRC;
+	private byte[] crc;
+
+	// the whole frame
+	// these 2 fields should represent the same thing
+	private byte[] frameData;
+	private ByteBuffer bb;
+
+
 	
 	
 	// constructor for CHECKPOINT 2
 
-	public Frame(int destAddr, int srcAddr, byte[] data){
-		contInit();
-		
-		checkSumInit();
+	public Frame(short destAddr, short scrAddr, byte[] data, int len){
+		// bytes of data in frame
+		this.length = len;
+		// make the byte buffer as we go
+		this.bb = ByteBuffer.allocate(MIN_SIZE + this.length);
+		// 2 bytes
+		this.control = contInit();
+		this.bb.put(this.control, 0, this.control.length);
+		// 2 bytes 
+		this.destAddr = addrConverter(destAddr);
+		this.bb.put(this.destAddr, 2, this.destAddr.length);
+		// 2 bytes 
+		this.scrAddr = addrConverter(scrAddr);
+		this.bb.put(this.scrAddr, 4, this.scrAddr.length);
+		// len bytes 
 		this.data = data;
-		this.destAddr = destAddr;
+		this.bb.put(this.scrAddr, 6, this.scrAddr.length);
+		// 4 bytes 
+		this.crc = checkSumInit();
+		this.bb.put(this.scrAddr, (6 + this.length), this.scrAddr.length);
+		// now put it together
+
+		this.frameData = this.bb.array();
 	}
 
-
 	
+
 	// create the control portion with type Data, 
 	// a sequence number of zero, and with the retry bit set to zero (off).
 	private byte[] contInit(){
 		byte[] control;
 		BitSet temp = new BitSet(16);
 		
-		System.out.println(temp.toString());
+		// System.out.println(temp.toString());
 		control = temp.toByteArray();
 		
 		return control;
@@ -47,28 +73,38 @@ public class Frame {
 		
 		return cs;
 	}
-	
+
+	private byte[] addrConverter(short mac){
+		int macAddr = (int) mac;
+		ByteBuffer bb = ByteBuffer.allocate(2);
+		byte[] ma = ByteBuffer.allocate(4).putInt(macAddr).array();
+		bb.put(ma[2]);
+		bb.put(1, ma[3]);
+
+		return bb.array();
+	}
+
+	// return this frame, with the retransmission bit changed
+
 	public String toString(){
-		String frame;
-		frame = "";
+
+
+		String frame = this.bb.toString();
+
 		
 		return frame;
 	}
+	public void printFields(){
+		System.out.println("Data length -- >" + this.length); 
 
-	public int getDestAddr()
-	{
-		return destAddr;
+		System.out.println();
+		this.control 
+		this.destAddr
+		this.scrAddr 
+		this.data
+		this.crc 
 	}
 
-	public int size()
-	{
-		int theSize;//the total number of bytes in the packet. This will be needed in the sender for error checking.
 
-		return theSize;
-	}
 
-	public int getSrcAddr()
-	{
-		return srcAddr;
-	}
 }

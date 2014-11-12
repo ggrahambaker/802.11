@@ -1,12 +1,12 @@
 package bcast;
 import rf.RF;
-public class Broadcaster {
+public class LinkLayer {
 
 private ArrayBlockingQueue sendQueue;
 
-	public Broadcaster()
+	public LinkLayer()
 	{
-		System.out.println("Broadcaster up and running.");
+		System.out.println("LinkLayer up and running.");
 	}
 
 	public int send(short dest, byte[] data, int len)
