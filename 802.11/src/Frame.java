@@ -1,4 +1,4 @@
-package bcast;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 public class Frame {
@@ -36,14 +36,14 @@ public class Frame {
 		this.destAddr = addrConverter(destAddr);
 		this.bb.put(this.destAddr, 2, this.destAddr.length);
 		// 2 bytes 
-		this.scrAddr = addrConverter(scrAddr);
-		this.bb.put(this.scrAddr, 4, this.scrAddr.length);
+		this.srcAddr = addrConverter(scrAddr);
+		this.bb.put(this.srcAddr, 4, this.srcAddr.length);
 		// len bytes 
 		this.data = data;
-		this.bb.put(this.scrAddr, 6, this.scrAddr.length);
+		this.bb.put(this.data, 6, this.data.length);
 		// 4 bytes 
 		this.crc = checkSumInit();
-		this.bb.put(this.scrAddr, (6 + this.length), this.scrAddr.length);
+		this.bb.put(this.crc, (6 + this.length), this.crc.length);
 		// now put it together
 
 		this.frameData = this.bb.array();
@@ -86,23 +86,27 @@ public class Frame {
 
 	// return this frame, with the retransmission bit changed
 
-	public String toString(){
-
-
-		String frame = this.bb.toString();
-
-		
-		return frame;
+	public String toString(){		
+		return this.bb.toString();
 	}
 	public void printFields(){
 		System.out.println("Data length -- >" + this.length); 
 
-		System.out.println();
-		this.control 
-		this.destAddr
-		this.scrAddr 
-		this.data
-		this.crc 
+		// System.out.println();
+		// this.control 
+		// this.destAddr
+		// this.scrAddr 
+		// this.data
+		// this.crc 
+	}
+	public int size(){
+		return frameData.length;
+	}
+	
+	// get the frame data
+	public byte[] take(){
+		byte[] toRet = frameData;
+		return toRet;
 	}
 
 

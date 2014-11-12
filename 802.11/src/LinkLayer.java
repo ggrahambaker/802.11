@@ -1,4 +1,4 @@
-package bcast;
+import java.util.concurrent.ArrayBlockingQueue;
 import rf.RF;
 public class LinkLayer {
 
@@ -12,7 +12,7 @@ private ArrayBlockingQueue sendQueue;
 	public int send(short dest, byte[] data, int len)
 	{
 
-
+		return -1;
 	}
 
 }
