@@ -20,32 +20,37 @@ public class Frame {
 	private ByteBuffer bb;
 
 
-	
-	
 	// constructor for CHECKPOINT 2
 
 	public Frame(short destAddr, short scrAddr, byte[] data, int len){
+		
 		// bytes of data in frame
 		this.length = len;
+		
 		// make the byte buffer as we go
 		this.bb = ByteBuffer.allocate(MIN_SIZE + this.length);
+		
 		// 2 bytes
 		this.control = contInit();
 		this.bb.put(this.control, 0, this.control.length);
+		
 		// 2 bytes 
 		this.destAddr = addrConverter(destAddr);
 		this.bb.put(this.destAddr, 2, this.destAddr.length);
+		
 		// 2 bytes 
 		this.srcAddr = addrConverter(scrAddr);
 		this.bb.put(this.srcAddr, 4, this.srcAddr.length);
+		
 		// len bytes 
 		this.data = data;
 		this.bb.put(this.data, 6, this.data.length);
+		
 		// 4 bytes 
 		this.crc = checkSumInit();
 		this.bb.put(this.crc, (6 + this.length), this.crc.length);
+		
 		// now put it together
-
 		this.frameData = this.bb.array();
 	}
 
