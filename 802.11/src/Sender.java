@@ -32,6 +32,8 @@ private RF therf;
 			if(bytes != sent)
 			{
 				System.err.println("Error! couldn't send all the bytes");
+			}else{
+				System.err.println("Sent a packet");
 			}
 			
 			Thread.sleep(250);
