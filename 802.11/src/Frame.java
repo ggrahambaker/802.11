@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.*;
@@ -17,56 +18,70 @@ public class Frame {
 
 	// the whole frame
 	// these 2 fields should represent the same thing
-	private byte[] frameData;
+	// private byte[] frameData;
 	private ByteBuffer bb;
-
-
+	
+	
+	// make frame from byte array
+	public Frame(byte[] message){
+		this.bb =  ByteBuffer.allocate(message.length);
+		this.bb.put(message);
+	}
+	
 	// constructor for CHECKPOINT 2
 
 	public Frame(short destAddr, short scrAddr, byte[] data, int len){
 		
 		// bytes of data in frame
-		this.length = len;
+		System.out.println(data.length);
+		this.length = data.length;
+		
+		// frameData = new byte[data.length + MIN_SIZE];
 		
 		// make the byte buffer as we go
-		this.bb = ByteBuffer.allocate(MIN_SIZE + this.length);
+		this.bb = ByteBuffer.allocate(this.length + MIN_SIZE);
 		
 		// 2 bytes
 		this.control = contInit();
-		this.bb.put(this.control, 0, this.control.length);
+		System.out.println(this.control.length + " -- control leng");
+		this.bb.put(this.control);
+		
 		
 		// 2 bytes 
 		this.destAddr = addrConverter(destAddr);
-		this.bb.put(this.destAddr, 2, this.destAddr.length);
+		System.out.println(this.destAddr.length + " --- dest addr");
+		this.bb.put(this.destAddr);
 		
 		// 2 bytes 
 		this.srcAddr = addrConverter(scrAddr);
-		this.bb.put(this.srcAddr, 4, this.srcAddr.length);
+		System.out.println(this.srcAddr.length + " --- src addr");
+		this.bb.put(this.srcAddr);
 		
 		// len bytes 
 		this.data = data;
-		this.bb.put(this.data, 6, this.data.length);
+		this.bb.put(this.data);
 		
 		// 4 bytes 
 		this.crc = checkSumInit();
-		this.bb.put(this.crc, (6 + this.length), this.crc.length);
+		this.bb.put(this.crc);
 		
 		// now put it together
-		this.frameData = this.bb.array();
+		// this.frameData = this.bb.array();
 	}
+<<<<<<< HEAD
 	
 	
+=======
+
+>>>>>>> e942f72f7a7846b7cec042c1f6559b319a77236d
 
 	// create the control portion with type Data, 
 	// a sequence number of zero, and with the retry bit set to zero (off).
 	private byte[] contInit(){
-		byte[] control;
-		BitSet temp = new BitSet(16);
-		
-		// System.out.println(temp.toString());
-		control = temp.toByteArray();
-		
-		return control;
+		// byte[] control;// = new byte[2];
+		byte[] bytes = new byte[2];
+		Arrays.fill( bytes, (byte) 0 );
+		return bytes;
 	}
 	
 	
@@ -121,27 +136,23 @@ public class Frame {
 
 	// return this frame, with the retransmission bit changed
 
-	public String toString(){		
-		return this.bb.toString();
-	}
-	public void printFields(){
-		System.out.println("Data length -- >" + this.length); 
-
-		// System.out.println();
-		// this.control 
-		// this.destAddr
-		// this.scrAddr 
-		// this.data
-		// this.crc 
+	public String toString(){	
+		byte[] b = bb.array();
+		String toRet = "";
+		
+		for(int i = 0; i < b.length; i++){
+			toRet += b[i] + " | ";
+		}
+		
+		return toRet;
 	}
 	public int size(){
-		return frameData.length;
+		return bb.array().length;
 	}
 	
 	// get the frame data
-	public byte[] take(){
-		byte[] toRet = frameData;
-		return toRet;
+	public byte[] getByteArray(){
+		return bb.array();
 	}
 
 
