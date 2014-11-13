@@ -15,20 +15,29 @@ private RF therf;
 
 	public void run() {
 		System.out.println("Sender is running");
-		
-		
-//		int bytes;
-//		while(true) {
-//			bytes = sendQueue.size();
-//			sent = therf.transmit(sendQueue.take());
-//
-//			//compares bytes sent to bytes in the packet
-//			if(bytes != sent)
-//			{
-//				System.err.println("Error! couldn't send all the bytes");
-//			}
-//
-//		}
+		int bytes;
+		int sent;
+		while(true) {
+			while(sendQueue.peek() != null){
+			//wait until the rf channel is clear before begin sending
+			while(therf.inUse()){
+				Thread.sleep(100);
+			}
+			
+			
+			bytes = sendQueue.size();
+			sent = therf.transmit(sendQueue.take().getByteArray());
+
+			//compares bytes sent to bytes in the packet
+			if(bytes != sent)
+			{
+				System.err.println("Error! couldn't send all the bytes");
+			}
+			
+			Thread.sleep(250);
+			}
+
+		}
 		
 	}
 
