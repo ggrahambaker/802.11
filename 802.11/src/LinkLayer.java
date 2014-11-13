@@ -38,6 +38,8 @@ private ArrayBlockingQueue<byte[]> received;
 		t.setSrcAddr(packet.getSrc());
 		t.setData(packet.getData());
 		return packet.size();
+		}else{
+			
 		}
 		return 0;
 	}

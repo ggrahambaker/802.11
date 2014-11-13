@@ -68,12 +68,7 @@ public class Frame {
 		// now put it together
 		// this.frameData = this.bb.array();
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
->>>>>>> e942f72f7a7846b7cec042c1f6559b319a77236d
 
 	// create the control portion with type Data, 
 	// a sequence number of zero, and with the retry bit set to zero (off).
@@ -90,9 +85,8 @@ public class Frame {
 		
 		ByteBuffer bb = ByteBuffer.allocate(2);
 		bb.order(ByteOrder.LITTLE_ENDIAN);
-		bb.put(b1);
-		bb.put(b2);
-		short shortVal = bb.getShort(0);
+		bb.put((byte)0).put((byte)0).put(b1).put(b2);
+		short shortVal = (short) bb.getInt(0);
 		return shortVal;
 	}
 	
