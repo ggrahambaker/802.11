@@ -5,13 +5,13 @@ import wifi.*;
 public class LinkLayer {
 
 private ArrayBlockingQueue sendQueue;
-private ArrayBlockingQueue received;
+private ArrayBlockingQueue<byte[]> received;
 
 	public LinkLayer()
 	{
 		System.out.println("LinkLayer up and running.");
 		
-		received = new ArrayBlockingQueue<Frame>(10);
+		received = new ArrayBlockingQueue<byte[]>(10);
 		sendQueue = new ArrayBlockingQueue<Frame>(10);
 		RF rf = new RF(null,null);
 		
@@ -29,7 +29,13 @@ private ArrayBlockingQueue received;
 	}
 	
 	public int recv(Transmission t){
-		t.
+		if(received.peek()!=null){
+			Frame packet = new Frame(received.take());
+		
+		t.setDestAddr(packet.getDest());
+		t.setSrcAddr(packet.getSrc());
+		t.setData(packet.getData());
+		}
 	}
 	
 	

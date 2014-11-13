@@ -57,8 +57,6 @@ public class Frame {
 	
 	
 
-	
-
 	// create the control portion with type Data, 
 	// a sequence number of zero, and with the retry bit set to zero (off).
 	private byte[] contInit(){
@@ -81,6 +79,23 @@ public class Frame {
 		bb.put(b2);
 		short shortVal = bb.getShort(0);
 		return shortVal;
+	}
+	
+	
+	public short getControl(){
+		return bytesToShort(control[0], control[1]);
+	}
+	
+	public short getDest(){
+		return bytesToShort(destAddr[0],destAddr[1]);
+	}
+	
+	public short getSrc(){
+		return bytesToShort(srcAddr[0],srcAddr[1]);
+	}
+	
+	public byte[] getData(){
+		return data;
 	}
 	
 	private byte[] checkSumInit(){
