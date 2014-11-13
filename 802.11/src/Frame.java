@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
@@ -16,11 +17,14 @@ public class Frame {
 
 	// the whole frame
 	// these 2 fields should represent the same thing
-	private byte[] frameData;
+	// private byte[] frameData;
 	private ByteBuffer bb;
 	
-	public Frame(){
-		
+	
+	// make frame from byte array
+	public Frame(byte[] message){
+		this.bb =  ByteBuffer.allocate(message.length);
+		this.bb.put(message);
 	}
 	
 	// constructor for CHECKPOINT 2
@@ -61,7 +65,7 @@ public class Frame {
 		this.bb.put(this.crc);
 		
 		// now put it together
-		this.frameData = this.bb.array();
+		// this.frameData = this.bb.array();
 	}
 
 
@@ -97,27 +101,23 @@ public class Frame {
 
 	// return this frame, with the retransmission bit changed
 
-	public String toString(){		
-		return this.bb.toString();
-	}
-	public void printFields(){
-		System.out.println("Data length -- >" + this.length); 
-
-		// System.out.println();
-		// this.control 
-		// this.destAddr
-		// this.scrAddr 
-		// this.data
-		// this.crc 
+	public String toString(){	
+		byte[] b = bb.array();
+		String toRet = "";
+		
+		for(int i = 0; i < b.length; i++){
+			toRet += b[i] + " | ";
+		}
+		
+		return toRet;
 	}
 	public int size(){
-		return frameData.length;
+		return bb.array().length;
 	}
 	
 	// get the frame data
 	public byte[] getByteArray(){
-		byte[] toRet = frameData;
-		return toRet;
+		return bb.array();
 	}
 
 
