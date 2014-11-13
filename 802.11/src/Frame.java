@@ -1,4 +1,5 @@
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.*;
 
 public class Frame {
@@ -53,6 +54,8 @@ public class Frame {
 		// now put it together
 		this.frameData = this.bb.array();
 	}
+	
+	
 
 	
 
@@ -66,6 +69,18 @@ public class Frame {
 		control = temp.toByteArray();
 		
 		return control;
+	}
+	
+	
+	
+	private short bytesToShort(byte b1, byte b2){
+		
+		ByteBuffer bb = ByteBuffer.allocate(2);
+		bb.order(ByteOrder.LITTLE_ENDIAN);
+		bb.put(b1);
+		bb.put(b2);
+		short shortVal = bb.getShort(0);
+		return shortVal;
 	}
 	
 	private byte[] checkSumInit(){

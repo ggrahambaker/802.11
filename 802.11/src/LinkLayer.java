@@ -1,6 +1,7 @@
 import java.util.concurrent.ArrayBlockingQueue;
-
 import rf.RF;
+import wifi.*;
+
 public class LinkLayer {
 
 private ArrayBlockingQueue sendQueue;
@@ -28,7 +29,7 @@ private ArrayBlockingQueue received;
 	}
 	
 	public int recv(Transmission t){
-		
+		t.
 	}
 	
 	
