@@ -4,7 +4,7 @@ import wifi.*;
 
 public class LinkLayer {
 
-private ArrayBlockingQueue sendQueue;
+private ArrayBlockingQueue<Frame> sendQueue;
 private ArrayBlockingQueue<byte[]> received;
 
 	public LinkLayer()
@@ -24,8 +24,10 @@ private ArrayBlockingQueue<byte[]> received;
 
 	public int send(short dest, byte[] data, int len)
 	{
-
-		return -1;
+		Frame packet = new Frame(dest,(short) 0, data, len);
+		sendQueue.put(packet);
+		
+		return data.length;
 	}
 	
 	public int recv(Transmission t){
@@ -35,7 +37,9 @@ private ArrayBlockingQueue<byte[]> received;
 		t.setDestAddr(packet.getDest());
 		t.setSrcAddr(packet.getSrc());
 		t.setData(packet.getData());
+		return packet.size();
 		}
+		return 0;
 	}
 	
 	
